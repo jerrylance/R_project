@@ -582,7 +582,37 @@ points(km$centers[,c("LonB10", "LatB10")], pch = 8, cex=2)
 ggplot(location11)+ geom_point(aes(LonB10,LatB10,colour = km$cluster))
 
 ggplot(location11)+ geom_point(aes(LonB10,LatB10,colour = Area.ID))
+# Caculate the K-means accurate
+summary(km)
+km$cluster
+ck = data.frame(km$cluster)
+ca = data.frame(location11$Area.ID)
+cc = data.frame(ck,ca)
+cc1 = cc[order(cc$location11.Area.ID),] 
+
+cc1$location11.Area.ID <- as.factor(cc1$location11.Area.ID)
+ggplot(cc1) + geom_boxplot(aes(cc1$location11.Area.ID,cc1$km.cluster))
+
+table(cc1$km.cluster,cc1$location11.Area.ID)
+#1 10, 2 21, 3 6~11, 4 3~5, 5 1, 6 7, 7 2~6, 8 18, 9 9, 10 9~15, 11 5~17,
+#12 11~18, 13 10~11, 14 4, 15 13, 16 14~20, 17 15, 18 12, 19 9~20, 20 6~21, 21 15
+
+# order the sequential the Area.ID and K-means.ID
+cc1$km.cluster <- as.factor(cc1$km.cluster)
+levels(cc1$km.cluster)
+km.cluster = c("10","21","6","3","1","7","2","18","9","14","5","16","11","4","13","17","19","12","20","8","15")
+km.cluster = factor(1:length(km.cluster),labels = km.cluster)
+cc1$km.cluster = factor(cc1$km.cluster,levels = levels(km.cluster))
+table(cc1$km.cluster,cc1$location11.Area.ID)
+# To make the result better, exchange K-means cluster 14 to 17, 16 to 19.
+km.cluster = c("10","21","6","3","1","7","2","18","9","17","5","19","11","4","13","14","16","12","20","8","15")
+km.cluster = factor(1:length(km.cluster),labels = km.cluster)
+cc1$km.cluster = factor(cc1$km.cluster,levels = levels(km.cluster))
+table(cc1$km.cluster,cc1$location11.Area.ID)
+
 
 # 2018 arrest data
 cor(Arrest[,c(3,4,6,7,10)])
+
+
 # pairs(Arrest[,c(3,4,7,10,17)]) 
